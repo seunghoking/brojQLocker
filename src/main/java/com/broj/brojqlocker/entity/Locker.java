@@ -1,5 +1,6 @@
 package com.broj.brojqlocker.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -18,6 +19,7 @@ public class Locker {
     
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "locker_room_id")
+    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     private LockerRoom lockerRoom;
     
     @Enumerated(EnumType.STRING)

@@ -8,27 +8,31 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/locker-rooms")
+@RequestMapping("/api/lockers")
 @RequiredArgsConstructor
 public class LockerController {
     
     private final LockerService lockerService;
     
-    @GetMapping("/{roomCode}/lockers/available")
-    public List<Locker> getAvailableLockers(@PathVariable String roomCode) {
-        return lockerService.getAvailableLockers(roomCode);
+    @GetMapping("/room/{roomId}")
+    public List<Locker> getAllLockersByRoom(@PathVariable Long roomId) {
+        return lockerService.getAllLockersByRoom(roomId);
     }
     
-    @PostMapping("/{roomCode}/lockers/{lockerNumber}/assign")
+    @GetMapping("/room/{roomId}/available")
+    public List<Locker> getAvailableLockers(@PathVariable Long roomId) {
+        return lockerService.getAvailableLockers(roomId);
+    }
+    
+    @PostMapping("/{lockerId}/assign")
     public ResponseEntity<Locker> assignLocker(
-            @PathVariable String roomCode,
-            @PathVariable String lockerNumber,
+            @PathVariable Long lockerId,
             @RequestParam Long customerId) {
-        Locker locker = lockerService.assignLocker(roomCode, lockerNumber, customerId);
+        Locker locker = lockerService.assignLocker(lockerId, customerId);
         return ResponseEntity.ok(locker);
     }
     
-    @PostMapping("/customers/{customerId}/release")
+    @PostMapping("/customer/{customerId}/release")
     public ResponseEntity<Locker> releaseLocker(@PathVariable Long customerId) {
         Locker locker = lockerService.releaseLocker(customerId);
         return ResponseEntity.ok(locker);
